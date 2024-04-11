@@ -14,7 +14,8 @@ if (isset($_GET['id'])) {
     // Supprimer la tâche de la base de données en utilisant la méthode deleteTache
     try {
         $manager->deleteTache($idTache);
-        echo "La tâche a été supprimée avec succès.";
+        header("Location: index.php");
+        exit();
     } catch (Exception $e) {
         echo "Erreur : " . $e->getMessage();
     }

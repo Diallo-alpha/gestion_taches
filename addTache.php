@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insérer les données dans la base de données en utilisant la méthode creerTache
         try {
             $manager->creerTache($tache);
-            // echo "La tâche a été ajoutée avec succès.";
+            header("location: index.php");
         } catch (Exception $e) {
             echo "Erreur : " . $e->getMessage();
         }
@@ -66,6 +66,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value='A faire'>A faire</option>
                  <option value='En cours'>En cours</option>
                  <option value='Terminée'>Terminée</option>
+            </select>
+
+
+            <label for="assigner_a">Assigner à :</label>
+            <select id="assigner_a" name="assigner_a" required>
+                <option value="">Sélectionner un utilisateur</option>
+                <?php
+                $manager = new Manager($connexion);
+                $listeUtilisateurs = $manager->allUser(); // Assurez-vous que cette méthode récupère correctement tous les utilisateurs
+                foreach ($listeUtilisateurs as $utilisateur) {
+                    echo "<option value='".$utilisateur['id']."'>".$utilisateur['nom']." ".$utilisateur['prenom']."</option>";
+                }
+                ?>
             </select>
 
             <button type="submit">Ajouter la tâche</button>

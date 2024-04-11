@@ -3,6 +3,9 @@
 require_once "inclureClasse.php";
 require_once "config.php";
 
+// Initialiser $idTache à une valeur par défaut
+$idTache = null;
+
 // Vérifier si l'identifiant de la tâche à mettre à jour est passé en paramètre
 if (isset($_GET['id'])) {
     // Récupérer l'identifiant de la tâche depuis l'URL
@@ -11,6 +14,12 @@ if (isset($_GET['id'])) {
     // Récupérer les informations de la tâche à mettre à jour depuis la base de données
     $manager = new Manager($connexion);
     $tache = $manager->getTacheById($idTache);
+
+    // Vérifier si la tâche existe
+    if (!$tache) {
+        echo "La tâche demandée n'existe pas.";
+        exit();
+    }
 }
 
 // Vérifier si le formulaire a été soumis
@@ -57,30 +66,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Modifier la tâche</h2>
-        <form action="<?php echo $_SERVER['PHP_SELF'] . "?id=$idTache"; ?>" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . "?id=$idTache"); ?>" method="POST">
             <label for="libelle">Libellé de la tâche :</label>
-            <input type="text" id="libelle" name="libelle" value="<?php echo $tache['libelle']; ?>" required>
+            <input type="text" id="libelle" name="libelle" value="<?php echo isset($tache['libelle']) ? htmlspecialchars($tache['libelle']) : ''; ?>" required>
 
             <label for="description">Description :</label>
-            <textarea id="description" name="description" rows="4" required><?php echo $tache['description']; ?></textarea>
+            <textarea id="description" name="description" rows="4" required><?php echo isset($tache['description']) ? htmlspecialchars($tache['description']) : ''; ?></textarea>
 
             <label for="date_livrable">Date livrable :</label>
-            <input type="date" id="date_livrable" name="date_livrable" value="<?php echo $tache['date_livrable']; ?>" required>
+            <input type="date" id="date_livrable" name="date_livrable" value="<?php echo isset($tache['date_livrable']) ? htmlspecialchars($tache['date_livrable']) : ''; ?>" required>
 
             <label for="priorite">Priorité :</label>
             <select id="priorite" name="priorite" required>
-                <option value="faible" <?php if ($tache['priorite'] == 'faible') echo 'selected'; ?>>Basse</option>
-                <option value="Moyenne" <?php if ($tache['priorite'] == 'Moyenne') echo 'selected'; ?>>Moyenne</option>
-                <option value="elevee" <?php if ($tache['priorite'] == 'elevee') echo 'selected'; ?>>Haute</option>
+                <option value="faible" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'faible') echo 'selected'; ?>>Basse</option>
+                <option value="Moyenne" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'Moyenne') echo 'selected'; ?>>Moyenne</option>
+                <option value="elevee" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'elevee') echo 'selected'; ?>>Haute</option>
             </select>
 
             <label for="etat">État :</label>
             <select id="etat" name="etat" required>
-                 <option value='A faire' <?php if ($tache['etat'] == 'A faire') echo 'selected'; ?>>A faire</option>
-                 <option value='En cours'<?php if ($tache['etat'] == 'En cours') echo 'selected'; ?>>En cours</option>
-                 <option value='Terminée'<?php if ($tache['etat'] == 'Terminée') echo 'selected'; ?>>Terminée</option>
+                 <option value='A faire' <?php if (isset($tache['etat']) && $tache['etat'] == 'A faire') echo 'selected'; ?>>A faire</option>
+                 <option value='En cours'<?php if (isset($tache['etat']) && $tache['etat'] == 'En cours') echo 'selected'; ?>>En cours</option>
+                 <option value='Terminée'<?php if (isset($tache['etat']) && $tache['etat'] == 'Terminée') echo 'selected'; ?>>Terminée</option>
             </select>
 
+            <label for="assigner_a">Assigner à :</label>
+            <select id="assigner_a" name="assigner_a" required>
+                <option value="">Sélectionner un utilisateur</option>
+                <?php
+                $manager = new Manager($connexion);
+                $listeUtilisateurs = $manager->allUser(); // Assurez-vous que cette méthode récupère correctement tous les utilisateurs
+                foreach ($listeUtilisateurs as $utilisateur) {
+                    $selected = isset($tache['assigner_a']) && $tache['assigner_a'] == $utilisateur['id'] ? 'selected' : '';
+                    echo "<option value='".$utilisateur['id']."' $selected>".$utilisateur['nom']." ".$utilisateur['prenom']."</option>";
+                }
+                ?>
+            </select>
             <button type="submit">Modifier la tâche</button>
         </form>
     </div>

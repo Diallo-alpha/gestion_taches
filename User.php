@@ -1,14 +1,15 @@
 <?php
-
+require_once "config.php";
+require_once "inclureClasse.php";
 class User {
-    protected $erreurs = [];
-    protected $id;
-    protected $connexion;
-    protected $name;
-    protected $firstName;
-    protected $email;
-    protected $password;
-    protected $tel;
+    private $erreurs = [];
+   private $id;
+   private $connexion;
+   private $name;
+   private $firstName;
+   private $email;
+   private $password;
+   private $tel;
 
     // Constantes pour les erreurs de validation
     const NOM_INVALIDE = 1;

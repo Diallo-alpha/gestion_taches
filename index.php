@@ -30,6 +30,7 @@ try {
                     <p>Date livrable : <?= htmlspecialchars($tache->getDate()) ?></p>
                     <p>Priorité : <?= htmlspecialchars($tache->getPriorite()) ?></p>
                     <p>État : <?= htmlspecialchars($tache->getEtat()) ?></p>
+                    <p>Assignée à : <?= htmlspecialchars($manager->getNomUtilisateurById($tache->getUtilisateurId())) ?></p>
                     <div class="boutons">
                         <a href="updateTache.php?id=<?= $tache->getId() ?>">Modifier</a>
                         <a href="deleteTache.php?id=<?= $tache->getId() ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">Supprimer</a>

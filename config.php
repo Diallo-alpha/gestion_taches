@@ -6,7 +6,7 @@ $password = "";
 
 try{
     $connexion = new PDO("mysql:host=$servername;dbname=$db",$username,$password);
-    $connexion->setAttribut(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 }catch(PDOException $e)
     {

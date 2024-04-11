@@ -89,7 +89,6 @@ class Tache {
     }
 
     public function setDate($date) {
-        // Ajouter une validation pour la date livrable
         // Vérifie si la date est au format YYYY-MM-DD
         if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $date)) {
             $this->erreurs[] = self::DATE_LIVRABLE_INVALIDE;

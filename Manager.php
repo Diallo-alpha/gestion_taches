@@ -1,6 +1,6 @@
-<?
+<?php
 require_once "config.php";
-require_once "User.php";
+require_once "inclureClasse.php";
 
 class Manager extends User {
     protected $connexion;
@@ -71,5 +71,43 @@ class Manager extends User {
             throw new Exception("Erreur de suppression dans la base de données: " . $e->getMessage());
         }
     }
+    //pour l'affichage 
+    public function getTaches() {
+        try {
+            $sql = $this->connexion->prepare("SELECT * FROM tache");
+            $sql->execute();
+            $resultat = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $taches = [];
+    
+            foreach ($resultat as $row) {
+                $tache = new Tache();
+                $tache->setId($row['id']);
+                $tache->setLibelle($row['libelle']);
+                $tache->setDescription($row['description']);
+                $tache->setDate($row['date_livrable']);
+                $tache->setPriorite($row['priorite']);
+                $tache->setEtat($row['etat']);
+                $taches[] = $tache;
+            }
+    
+            return $taches;
+        } catch (PDOException $e) {
+            // En cas d'erreur PDO
+            throw new Exception("Erreur de récupération des tâches depuis la base de données: " . $e->getMessage());
+        }
+    }
+    public function getTacheById($id) {
+        try {
+            $sql = $this->connexion->prepare("SELECT * FROM tache WHERE id = :id");
+            $sql->bindParam(':id', $id);
+            $sql->execute();
+            $tache = $sql->fetch(PDO::FETCH_ASSOC);
+            return $tache;
+        } catch (PDOException $e) {
+            // En cas d'erreur PDO
+            throw new Exception("Erreur de récupération de la tâche depuis la base de données: " . $e->getMessage());
+        }
+    }
+    
 }
 ?>

@@ -97,3 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
+ // case User::TELEPHONE_INVALIDE:
+                //         echo "Téléphone invalide";
+                        // break;
+preg_match("/^\d{8,12}$/", $tel)

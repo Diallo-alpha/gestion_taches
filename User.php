@@ -2,7 +2,7 @@
 require_once "config.php";
 require_once "inclureClasse.php";
 class User {
-    private $erreurs = [];
+   private $erreurs = [];
    private $id;
    private $connexion;
    private $name;
@@ -11,17 +11,21 @@ class User {
    private $password;
    private $tel;
 
-    // Constantes pour les erreurs de validation
-    const NOM_INVALIDE = 1;
-    const PRENOM_INVALIDE = 2;
-    const EMAIL_INVALIDE = 3;
+   // Constantes pour les erreurs de validation
+   const NOM_INVALIDE = 1;
+   const PRENOM_INVALIDE = 2;
+   const EMAIL_INVALIDE = 3;
+   const TELEPHONE_INVALIDE = 4;
+   const MOT_DE_PASSE_INVALIDE = 5;
 
-    // Constructeur de la classe User
+// Constructeur de la classe User
+
     public function __construct($donnees = []) {
-        // Si des données sont fournies, hydrate l'objet avec ces données
+    // Si des données sont fournies, hydrate l'objet avec ces données
         if(!empty($donnees)) {
-            $this->hydrater($donnees);
+        $this->hydrater($donnees);
         }
+        $this->erreurs = [];
     }
 
     // Méthode pour hydrater l'objet avec des données
@@ -70,6 +74,9 @@ class User {
     }
 
     // Méthodes setter pour définir les attributs de l'objet
+    public function setErr($error) {
+        $this->erreurs[] = $error;
+    }
     public function setId($id) {
         if(!empty($id)) {
             $this->id = (int) $id;
@@ -108,16 +115,19 @@ class User {
     }
 
     public function setPassword($password) {
-        // Définit le mot de passe
-        $this->password = $password;
+        // Vérifie si le mot de passe est une chaîne non vide
+        if(!is_string($password) || empty($password)) {
+            $this->erreurs[] = self::MOT_DE_PASSE_INVALIDE;
+        } else {
+            $this->password = $password;
+        }
     }
 
     public function setTel($tel) {
-        // Définit le numéro de téléphone
-        $this->tel = $tel;
+
+            $this->tel = $tel;
     }
 
-    // Méthode pour vérifier si l'utilisateur est valide
     public function isUserValide() {
         // Vérifie s'il y a des erreurs de validation
         if (!empty($this->erreurs)) {

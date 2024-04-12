@@ -17,10 +17,24 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des tâches</title>
-    <link rel="stylesheet" href="style/tache.css">
+    <link rel="stylesheet" href="styles/taches.css">
 </head>
 <body>
-    <div class="container">
+<header>
+    <div class="logo">
+        <img src="images/alpha.svg" alt="Logo">
+    </div>
+    <div class="nav">
+        <nav>
+            <ul>
+                <li><a href="addTache.php">Ajouter une tâche</a></li>
+                <li><a href="#listeTache">Liste des tâches</a></li>
+                <li><a href="#">Déconnexion</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+    <div class="container" id="listeTache">
         <h2>Liste des tâches</h2>
         <div class="taches">
             <?php foreach ($taches as $tache) : ?>

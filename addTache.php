@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter une tâche</title>
-    <link rel="stylesheet" href="/styles/taches.css">
+    <link rel="stylesheet" href="styles/addT.css">
 </head>
 <body>
     <div class="container">
@@ -64,9 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <label for="priorite">Priorité :</label>
             <select id="priorite" name="priorite" required>
-                <option value="faible">Basse</option>
+                <option value="faible">faible</option>
                 <option value="Moyenne">Moyenne</option>
-                <option value="elevee">Haute</option>
+                <option value="elevee">Difficile</option>
             </select>
             
             <label for="etat">État :</label>

@@ -78,9 +78,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <label for="priorite">Priorité :</label>
             <select id="priorite" name="priorite" required>
-                <option value="faible" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'faible') echo 'selected'; ?>>Basse</option>
+                <option value="faible" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'faible') echo 'selected'; ?>>Faible</option>
                 <option value="Moyenne" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'Moyenne') echo 'selected'; ?>>Moyenne</option>
-                <option value="elevee" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'elevee') echo 'selected'; ?>>Haute</option>
+                <option value="elevee" <?php if (isset($tache['priorite']) && $tache['priorite'] == 'elevee') echo 'selected'; ?>>Difficile</option>
             </select>
 
             <label for="etat">État :</label>

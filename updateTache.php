@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tache->setDate($_POST['date_livrable']);
     $tache->setPriorite($_POST['priorite']);
     $tache->setEtat($_POST['etat']);
+    $tache->setIdUser($_POST['assigner_a']);
 
     // Vérifier s'il y a des erreurs de validation
     if (empty($tache->getErr())) {

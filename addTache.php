@@ -1,7 +1,8 @@
 <?php
 // Inclure le fichier de connexion à la base de données et les classes nécessaires
-require 'inclureClasse.php';
 require_once "config.php";
+require_once "inclureClasse.php";
+
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Créer une instance de la classe Tache
@@ -13,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tache->setDate($_POST['date_livrable']);
     $tache->setPriorite($_POST['priorite']);
     $tache->setEtat($_POST['etat']);
+    $tache->setIdUser($_POST['assigner_a']);
 
     // Vérifier s'il y a des erreurs de validation
     if (empty($tache->getErr())) {
@@ -22,6 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insérer les données dans la base de données en utilisant la méthode creerTache
         try {
             $manager->creerTache($tache);
+
+            // Récupérer l'ID de l'utilisateur sélectionné dans le formulaire
+            $idUtilisateur = $_POST['assigner_a'];
+
+            // Assigner la tâche à l'utilisateur
+            $manager->assignerTacheAUtilisateur($tache->getId(), $idUtilisateur);
+
             header("location: index.php");
         } catch (Exception $e) {
             echo "Erreur : " . $e->getMessage();
@@ -60,21 +69,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="elevee">Haute</option>
             </select>
             
-           
             <label for="etat">État :</label>
-              <select id="etat" name="etat" required>
+            <select id="etat" name="etat" required>
                 <option value='A faire'>A faire</option>
-                 <option value='En cours'>En cours</option>
-                 <option value='Terminée'>Terminée</option>
+                <option value='En cours'>En cours</option>
+                <option value='Terminée'>Terminée</option>
             </select>
-
 
             <label for="assigner_a">Assigner à :</label>
             <select id="assigner_a" name="assigner_a" required>
                 <option value="">Sélectionner un utilisateur</option>
                 <?php
                 $manager = new Manager($connexion);
-                $listeUtilisateurs = $manager->allUser(); // Assurez-vous que cette méthode récupère correctement tous les utilisateurs
+                $listeUtilisateurs = $manager->allUser();
                 foreach ($listeUtilisateurs as $utilisateur) {
                     echo "<option value='".$utilisateur['id']."'>".$utilisateur['nom']." ".$utilisateur['prenom']."</option>";
                 }

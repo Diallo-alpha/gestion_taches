@@ -7,7 +7,7 @@ class Tache {
     private $date_livrable;
     private $priorite;
     private $etat;
-    private $utilisateur; // Ajout de l'attribut utilisateur
+    private $idUser; // Ajout de l'attribut idUser
 
     // Constantes pour les erreurs de validation 
     const LIBELLE_INVALIDE = 1;
@@ -17,22 +17,22 @@ class Tache {
     const DATE_LIVRABLE_INVALIDE = 5;
 
     // Constructeur de la classe Tache
-    public function __construct($donnee = []) {
+    public function __construct($donnees = []) {
         // Si des données sont fournies, hydrate l'objet avec ces données
-        if(!empty($donnee)) {
-            $this->hydrater($donnee);
+        if (!empty($donnees)) {
+            $this->hydrater($donnees);
         }
     }
 
     // Méthode pour hydrater l'objet avec des données 
-    public function hydrater($donnee) {
-        foreach($donnee as $attribut => $valeur) {
-            if ($attribut === 'utilisateur') {
-                $this->setUtilisateur($valeur); // Utilisateur associé à la tâche
+    public function hydrater($donnees) {
+        foreach ($donnees as $attribut => $valeur) {
+            if ($attribut === 'idUser') {
+                $this->setIdUser($valeur);
             } else {
-                $methodeSeters = "set" . ucfirst($attribut);
-                if(method_exists($this, $methodeSeters)) {
-                    $this->$methodeSeters($valeur);
+                $methodeSetter = "set" . ucfirst($attribut);
+                if (method_exists($this, $methodeSetter)) {
+                    $this->$methodeSetter($valeur);
                 }
             }
         }
@@ -67,30 +67,30 @@ class Tache {
         return $this->etat;
     }
 
-    public function getUtilisateurId() {
-        return $this->utilisateur;
+    public function getIdUser() {
+        return $this->idUser;
     }
 
     // Méthodes setter pour définir les attributs de l'objet
     public function setId($id) {
-        if(!empty($id)) {
+        if (!empty($id)) {
             $this->id = (int) $id;
         }
     }
 
     public function setLibelle($libelle) {
-        if(!is_string($libelle) || empty($libelle)) {
+        if (!is_string($libelle) || empty($libelle)) {
             $this->erreurs[] = self::LIBELLE_INVALIDE;
         } else {
             $this->libelle = $libelle;
         }
     }
 
-    public function setDescription($desc) {
-        if(!is_string($desc) || empty($desc)) {
+    public function setDescription($description) {
+        if (!is_string($description) || empty($description)) {
             $this->erreurs[] = self::DESCRIPTION_INVALIDE;
         } else {
-            $this->description = $desc;
+            $this->description = $description;
         }
     }
 
@@ -103,7 +103,7 @@ class Tache {
     }
 
     public function setPriorite($priorite) {
-        if(!is_string($priorite) || empty($priorite)) {
+        if (!is_string($priorite) || empty($priorite)) {
             $this->erreurs[] = self::PRIORITE_INVALIDE;
         } else {
             $this->priorite = $priorite;
@@ -111,15 +111,15 @@ class Tache {
     }
 
     public function setEtat($etat) {
-        if(!is_string($etat) || empty($etat)) {
+        if (!is_string($etat) || empty($etat)) {
             $this->erreurs[] = self::ETAT_INVALIDE;
         } else {
             $this->etat = $etat;
         }
     }
 
-    public function setUtilisateurId($utilisateur) {
-        $this->utilisateur = $utilisateur;
+    public function setIdUser($idUser) {
+        $this->idUser = $idUser;
     }
 }
 ?>

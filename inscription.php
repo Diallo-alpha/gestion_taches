@@ -36,16 +36,15 @@ if(isset($_POST['inscription'])) {
     }
     
     // Validation du mot de passe
-    if (!empty($_POST['mots_de_pase']) && $_POST['mots_de_pase'] === $_POST['mots_de_passe2']) {
-        $user->setPassword($_POST['mots_de_pase']);
+    if (!empty($_POST['mots_de_passe']) && $_POST['mots_de_passe'] === $_POST['mots_de_passe2']) {
+        $user->setPassword($_POST['mots_de_passe']);
     } else {
         $user->setErr(User::MOT_DE_PASSE_INVALIDE);
     }
     
     // Vérifier si l'utilisateur est valide en utilisant la méthode isUserValide()
     if($user->isUserValide()){
-        // Effectuer ici les actions nécessaires lorsque l'utilisateur est valide
-        echo "Tous les champs sont remplis et valides.";
+      header("location: login.php");
     } else {
         // Récupérer les erreurs de validation
         $erreurs = $user->getErr();
@@ -93,7 +92,7 @@ if(isset($_POST['inscription'])) {
             $sql->bindValue(':prenom', $_POST['prenom']);
             $sql->bindValue(':email', $_POST['email']);
             $sql->bindValue(':telephone', $_POST['tel']);
-            $sql->bindValue(':mot_de_passe', $_POST['mots_de_pase']);
+            $sql->bindValue(':mot_de_passe',$_POST['mots_de_passe']);
     //executer la requette
 
     $sql->execute();
@@ -107,7 +106,7 @@ if(isset($_POST['inscription'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inscription</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -123,14 +122,6 @@ if(isset($_POST['inscription'])) {
             <a href="login.php"><input type="submit" name="" value="Login"/></a><br/>
         </div>
         <div class="col-md-9 register-right">
-            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Employée</a>
-                </li>
-            </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <h3 class="register-heading">S'enregistrer</h3>
@@ -147,7 +138,7 @@ if(isset($_POST['inscription'])) {
                                 </div>
                                 <div class="form-group">
                                     <label for="mots_de_pase">Mot de passe</label>
-                                    <input type="password" class="form-control" placeholder="Mot de passe *" value="" name="mots_de_pase"/>
+                                    <input type="password" class="form-control" placeholder="Mot de passe *" value="" name="mots_de_passe"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="mots_de_passe2">Confirmer mot de passe</label>
@@ -169,39 +160,7 @@ if(isset($_POST['inscription'])) {
                             </div>
                         </div>
                     </form>
-                </div>
-                <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <h3 class="register-heading">Enregistrer employée</h3>
-                    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" role="form">
-                        <div class="row register-form">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Nom *" value="" name="nom"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Prénom *" value="" name="prenom"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email *" value="" name="email"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" minlength="8" maxlength="12" placeholder="Numéro de téléphone *" value="" name="tel"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Mot de passe *" value="" name="mots_de_passe"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Confirmer mot de passe *" value="" name="mots_de_passe2"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" class="btnRegister"  value="S'inscrire" name="inscription"/>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                
             </div>
         </div>
     </div>
